@@ -130,9 +130,9 @@ if(response.isTapConfirmButton) {
 ```
 
 # A message with a custom image
-
-```
 ![](https://github.com/hsndmr/art_sweetalert/raw/master/images/image-message.gif)
+```
+
 
 ArtSweetAlert.show(
     context: context,
