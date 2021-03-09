@@ -187,15 +187,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     btnText: "A confirm dialog",
                     onTab: () async {
                       ArtDialogResponse response = await ArtSweetAlert.show(
-                          barrierDismissible: false,
-                          context: context,
-                          artDialogArgs: ArtDialogArgs(
-                            denyButtonText: "Cancel",
-                            title: "Are you sure?",
-                            text: "You won't be able to revert this!",
-                            confirmButtonText: "Yes, delete it",
-                            type: ArtSweetAlertType.warning
-                          )
+                        barrierDismissible: false,
+                        context: context,
+                        artDialogArgs: ArtDialogArgs(
+                          denyButtonText: "Cancel",
+                          title: "Are you sure?",
+                          text: "You won't be able to revert this!",
+                          confirmButtonText: "Yes, delete it",
+                          type: ArtSweetAlertType.warning
+                        )
                       );
 
                       if(response==null) {
