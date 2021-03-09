@@ -1,4 +1,3 @@
-import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:flutter/material.dart';
 
 class ArtButton extends StatefulWidget {

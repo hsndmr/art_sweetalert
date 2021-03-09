@@ -1,6 +1,6 @@
 # art_sweetalert
 
-A new sweet alert for flutter.
+A new sweet alert for flutter. You can show sweet alert in your app.
 
 
 # A success message
