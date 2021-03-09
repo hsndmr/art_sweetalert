@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   child: ArtButton(
                     bgColor: Colors.red,
-                    btnText: "a error message",
+                    btnText: "an error message",
                     onTab: () {
                       ArtSweetAlert.show(
                           context: context,

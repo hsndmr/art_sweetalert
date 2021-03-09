@@ -27,7 +27,7 @@ ArtSweetAlert.show(
 );
 ```
 
-# A error message
+# An error message
 
 ```
 ArtSweetAlert.show(
@@ -113,6 +113,32 @@ if(response.isTapConfirmButton) {
   );
   return;
 }
+
+
+```
+
+# A message with a custom image
+
+```
+
+ArtSweetAlert.show(
+    context: context,
+    artDialogArgs: ArtDialogArgs(
+        title: "Sweet!",
+        text: "Modal with a custom image.",
+        customColumns: [
+          Container(
+            margin: EdgeInsets.only(
+                bottom: 12.0
+            ),
+            child: Image.network(
+              "https://unsplash.it/400/200",
+            ),
+
+          )
+        ]
+    )
+);
 
 
 ```
