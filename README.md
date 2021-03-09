@@ -3,7 +3,12 @@
 A new sweet alert for flutter. You can show sweet alert in your app.
 
 
+
 # A success message
+
+![](https://github.com/hsndmr/art_sweetalert/raw/master/images/success-message.gif)
+
+
 ```
 ArtSweetAlert.show(
   context: context,
@@ -16,6 +21,9 @@ ArtSweetAlert.show(
 ```
 
 # A message with title and text
+
+![](https://github.com/hsndmr/art_sweetalert/raw/master/images/question-message.gif)
+
 ```
 ArtSweetAlert.show(
     context: context,
@@ -28,7 +36,7 @@ ArtSweetAlert.show(
 ```
 
 # An error message
-
+![](https://github.com/hsndmr/art_sweetalert/raw/master/images/error-message.gif)
 ```
 ArtSweetAlert.show(
     context: context,
@@ -43,6 +51,8 @@ ArtSweetAlert.show(
 
 
 # A dialog with three buttons
+
+![](https://github.com/hsndmr/art_sweetalert/raw/master/images/dialog-message.gif)
 
 ```
 ArtDialogResponse response = await ArtSweetAlert.show(
@@ -86,6 +96,8 @@ if(response.isTapDenyButton) {
 
 # A confirm dialog
 
+![](https://github.com/hsndmr/art_sweetalert/raw/master/images/confirm-message.gif)
+
 ```
 ArtDialogResponse response = await ArtSweetAlert.show(
   barrierDismissible: false,
@@ -120,6 +132,7 @@ if(response.isTapConfirmButton) {
 # A message with a custom image
 
 ```
+![](https://github.com/hsndmr/art_sweetalert/raw/master/images/image-message.gif)
 
 ArtSweetAlert.show(
     context: context,
