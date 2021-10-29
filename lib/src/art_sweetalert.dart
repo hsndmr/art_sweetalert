@@ -29,9 +29,8 @@ class ArtSweetAlert {
           artDialogArgs: artDialogArgs,
         );
       },
-
       barrierDismissible:  barrierDismissible,
-      barrierColor: Colors.black.withOpacity(0.4),
+      barrierColor: artDialogArgs.barrierColor,
       transitionDuration: const Duration(milliseconds: 600),
       transitionBuilder: (
         BuildContext context,

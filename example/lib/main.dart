@@ -248,6 +248,29 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                   )
               ),
+              Container(
+                  margin: EdgeInsets.only(
+                      bottom: 12.0
+                  ),
+                  child: ArtButton(
+                    bgColor: Colors.purple,
+                    btnText: "Custom padding, background",
+                    onTab: () async {
+                      ArtSweetAlert.show(
+                          context: context,
+                          artDialogArgs: ArtDialogArgs(
+                            dialogPadding: EdgeInsets.all(60),
+                            title: "Custom padding, background.",
+                            barrierColor: Color.fromRGBO(0,0,123,0.4),
+                            decorationImage: DecorationImage(
+                              image: AssetImage('assets/images/trees.png'),
+                              fit: BoxFit.fill
+                            )
+                          )
+                      );
+                    },
+                  )
+              ),
             ],
           ),
         ),

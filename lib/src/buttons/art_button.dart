@@ -8,6 +8,7 @@ class ArtButton extends StatefulWidget {
   final Function? onTab;
   final String btnText;
   final TextStyle? btnTextStyle;
+  final double fontSize;
 
   const ArtButton(
     {
@@ -16,7 +17,8 @@ class ArtButton extends StatefulWidget {
       this.btnIcon,
       this.onTab,
       this.btnText = "OK",
-      this.btnTextStyle
+      this.btnTextStyle,
+      this.fontSize = 15
     }
   ) : super(key: key);
 
@@ -38,7 +40,7 @@ class _ArtButtonState extends State<ArtButton> {
         widget.btnText,
         style: widget.btnTextStyle ?? TextStyle(
             color: Colors.white,
-            fontSize: 18.0,
+            fontSize: widget.fontSize,
             fontWeight: FontWeight.w500
         ),
       ),

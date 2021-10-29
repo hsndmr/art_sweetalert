@@ -138,9 +138,6 @@ class _ArtDialogState extends State<ArtDialog> {
 
     );
     return Container(
-      margin: EdgeInsets.only(
-        right: 8.0
-      ),
       child: button,
     );
   }
@@ -163,7 +160,7 @@ class _ArtDialogState extends State<ArtDialog> {
     );
     return Container(
       margin: EdgeInsets.only(
-          right: 8.0
+          left: 8.0
       ),
       child: button,
     );
@@ -186,6 +183,9 @@ class _ArtDialogState extends State<ArtDialog> {
         }
     );
     return Container(
+      margin: EdgeInsets.only(
+        left: 8.0
+      ),
       child: button,
     );
   }
@@ -260,18 +260,17 @@ class _ArtDialogState extends State<ArtDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      elevation: 0,
-      child: Container(
-        padding: EdgeInsets.all(20.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-        ),
-        //alignment: Alignment.center,
-
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: _columns,
+    return  Dialog(
+      backgroundColor: Colors.transparent,
+      elevation: artDialogArgs().dialogElevation,
+      child: SingleChildScrollView(
+        child: Container(
+          padding: artDialogArgs().dialogPadding,
+          decoration: artDialogArgs().getDialogDecoration(),
+          child: Column(
+            mainAxisSize: artDialogArgs().dialogMainAxisSize,
+            children: _columns,
+          ),
         ),
       ),
     );
@@ -309,7 +308,20 @@ class ArtDialogArgs {
   final Color cancelButtonColor;
 
 
+  final EdgeInsets dialogPadding;
+  Decoration? dialogDecoration;
+  final double dialogElevation;
+  final MainAxisSize dialogMainAxisSize;
+  final AlignmentGeometry dialogAlignment;
+  final DecorationImage? decorationImage;
+
+
+  final Color barrierColor;
+
   final List<Widget>? customColumns;
+
+
+  late Decoration _dialogDecoration;
 
   ArtDialogArgs({
     this.text,
@@ -322,11 +334,36 @@ class ArtDialogArgs {
     this.onConfirm,
     this.onDeny,
     this.onCancel,
-    this.confirmButtonColor =  const Color.fromRGBO(39, 120, 196, 1),
+    this.confirmButtonColor =  const Color.fromRGBO(115, 103, 240, 1),
     this.denyButtonColor = const Color.fromRGBO(221, 51, 51, 1),
     this.cancelButtonColor = const Color.fromRGBO(117, 117, 117, 1),
-    this.customColumns
-  });
+    this.customColumns,
+    this.dialogPadding = const EdgeInsets.all(20),
+    this.dialogDecoration,
+    this.decorationImage,
+    this.dialogElevation = 0.0,
+    this.dialogMainAxisSize = MainAxisSize.min,
+    this.dialogAlignment = Alignment.center,
+    this.barrierColor =  const Color.fromRGBO(0, 0, 0, 0.4)
+
+  }) {
+
+    if(dialogDecoration!=null) {
+      _dialogDecoration = this.dialogDecoration!;
+    } else {
+      _dialogDecoration = BoxDecoration(
+        image: decorationImage,
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(4.0))
+      );
+    }
+
+
+  }
+
+  Decoration getDialogDecoration() {
+    return _dialogDecoration;
+  }
 
 
 }
