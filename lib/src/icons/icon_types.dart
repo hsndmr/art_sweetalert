@@ -1,6 +1,1 @@
-enum IconTypes {
-  success,
-  question,
-  warning,
-  error
-}
+enum IconTypes { success, question, warning, error }

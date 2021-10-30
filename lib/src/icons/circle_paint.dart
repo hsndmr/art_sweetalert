@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-class CirclePaint extends CustomPainter {
 
+class CirclePaint extends CustomPainter {
   final double rate;
   final double strokeWidth;
   final Color color;
@@ -16,15 +16,10 @@ class CirclePaint extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-
-
-
     Paint circle = Paint()
-        ..color = this.fillColor
-        ..strokeWidth = this.strokeWidth
-        ..style = PaintingStyle.stroke;
-
-
+      ..color = this.fillColor
+      ..strokeWidth = this.strokeWidth
+      ..style = PaintingStyle.stroke;
 
     Paint arc = Paint()
       ..strokeWidth = 2.0
@@ -32,32 +27,16 @@ class CirclePaint extends CustomPainter {
       ..color = this.color
       ..strokeCap = StrokeCap.round;
 
-
-    Offset center = Offset(size.width/2,size.height/2);
-    double radius = math.min(size.width/2,size.height/2) - this.strokeWidth;
+    Offset center = Offset(size.width / 2, size.height / 2);
+    double radius =
+        math.min(size.width / 2, size.height / 2) - this.strokeWidth;
 
     canvas.drawCircle(center, radius, circle);
 
+    double angle = 2 * math.pi * ((100 - this.rate) / 100);
 
-    double angle = 2 * math.pi * ((100-this.rate)/100);
-
-
-    canvas.drawArc(
-      Rect.fromCircle(
-        center: center,
-        radius: radius
-      ),
-      radius,
-      angle,
-      false,
-      arc
-    );
-
-
-
-
-
-    
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), radius,
+        angle, false, arc);
   }
 
   @override

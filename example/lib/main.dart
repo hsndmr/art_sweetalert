@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:art_sweetalert/art_sweetalert.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 
 void main() {
   runApp(MyApp());
@@ -52,6 +57,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  final _textController = TextEditingController();
+
+  GlobalKey<ArtDialogState> _artDialogKey;
+
+  @override
+  void initState() {
+    _artDialogKey = GlobalKey<ArtDialogState>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -61,220 +76,249 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(
-                  bottom: 12.0
-                ),
-                child: ArtButton(
-                  bgColor: Colors.green,
-                  btnText: "a success message",
-                  onTab: () {
-                    ArtSweetAlert.show(
-                      context: context,
-                      artDialogArgs: ArtDialogArgs(
-                        type: ArtSweetAlertType.success,
-                        title: "A success message!",
-                        text: "Show a success message with an icon"
-                      )
-                    );
-                  },
-                )
-              ),
-              Container(
-                  margin: EdgeInsets.only(
-                      bottom: 12.0
-                  ),
-                  child: ArtButton(
-                    bgColor: Colors.blue,
-                    btnText: "a message with title and text",
-                    onTab: () {
-                      ArtSweetAlert.show(
-                          context: context,
-                          artDialogArgs: ArtDialogArgs(
-                              type: ArtSweetAlertType.question,
-                              title: "A question?",
-                              text: "Show a question message with an icon"
-                          )
-                      );
-                    },
-                  )
-              ),
-              Container(
-                  margin: EdgeInsets.only(
-                      bottom: 12.0
-                  ),
-                  child: ArtButton(
-                    bgColor: Colors.red,
-                    btnText: "an error message",
-                    onTab: () {
-                      ArtSweetAlert.show(
-                          context: context,
-                          artDialogArgs: ArtDialogArgs(
-                              type: ArtSweetAlertType.danger,
-                              title: "Oops...",
-                              text: "There is a problem :("
-                          )
-                      );
-                    },
-                  )
-              ),
-              Container(
-                  margin: EdgeInsets.only(
-                      bottom: 12.0
-                  ),
-                  child: ArtButton(
-                    bgColor: Colors.grey,
-                    btnText: "A dialog with three buttons",
-                    onTab: () async {
-                      ArtDialogResponse response = await ArtSweetAlert.show(
-                        barrierDismissible: false,
-                        context: context,
-                        artDialogArgs: ArtDialogArgs(
-                          showCancelBtn: true,
-                          denyButtonText: "Don't save",
-                          title: "Do you want to save the changes?",
-                          confirmButtonText: "Save",
-                        )
-                      );
-
-                      if(response==null) {
-                        return;
-                      }
-
-                      if(response.isTapConfirmButton) {
-                        ArtSweetAlert.show(
-                          context: context,
-                          artDialogArgs: ArtDialogArgs(
-                            type: ArtSweetAlertType.success,
-                            title: "Saved!"
-                          )
-                        );
-                        return;
-                      }
-
-                      if(response.isTapDenyButton) {
-                        ArtSweetAlert.show(
-                            context: context,
-                            artDialogArgs: ArtDialogArgs(
-                                type: ArtSweetAlertType.info,
-                                title: "Changes are not saved!"
-                            )
-                        );
-                        return;
-                      }
-
-                    },
-                  )
-              ),
-              Container(
-                  margin: EdgeInsets.only(
-                      bottom: 12.0
-                  ),
-                  child: ArtButton(
-                    bgColor: Colors.orange,
-                    btnText: "A confirm dialog",
-                    onTab: () async {
-                      ArtDialogResponse response = await ArtSweetAlert.show(
-                        barrierDismissible: false,
-                        context: context,
-                        artDialogArgs: ArtDialogArgs(
-                          denyButtonText: "Cancel",
-                          title: "Are you sure?",
-                          text: "You won't be able to revert this!",
-                          confirmButtonText: "Yes, delete it",
-                          type: ArtSweetAlertType.warning
-                        )
-                      );
-
-                      if(response==null) {
-                        return;
-                      }
-
-                      if(response.isTapConfirmButton) {
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
+        ),
+        body: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                    margin: EdgeInsets.only(bottom: 12.0),
+                    child: ArtButton(
+                      bgColor: Colors.purple,
+                      btnText: "a success message",
+                      onTab: () {
                         ArtSweetAlert.show(
                             context: context,
                             artDialogArgs: ArtDialogArgs(
                                 type: ArtSweetAlertType.success,
-                                title: "Deleted!"
+                                title: "A success message!",
+                                text: "Show a success message with an icon"));
+                      },
+                    )),
+                Container(
+                    margin: EdgeInsets.only(bottom: 12.0),
+                    child: ArtButton(
+                      bgColor: Colors.purple,
+                      btnText: "a message with title and text",
+                      onTab: () {
+                        ArtSweetAlert.show(
+                            context: context,
+                            artDialogArgs: ArtDialogArgs(
+                                type: ArtSweetAlertType.question,
+                                title: "A question?",
+                                text: "Show a question message with an icon"));
+                      },
+                    )),
+                Container(
+                    margin: EdgeInsets.only(bottom: 12.0),
+                    child: ArtButton(
+                      bgColor: Colors.purple,
+                      btnText: "an error message",
+                      onTab: () {
+                        ArtSweetAlert.show(
+                            context: context,
+                            artDialogArgs: ArtDialogArgs(
+                                type: ArtSweetAlertType.danger,
+                                title: "Oops...",
+                                text: "There is a problem :("));
+                      },
+                    )),
+                Container(
+                    margin: EdgeInsets.only(bottom: 12.0),
+                    child: ArtButton(
+                      bgColor: Colors.purple,
+                      btnText: "A dialog with three buttons",
+                      onTab: () async {
+                        ArtDialogResponse response = await ArtSweetAlert.show(
+                            barrierDismissible: false,
+                            context: context,
+                            artDialogArgs: ArtDialogArgs(
+                              showCancelBtn: true,
+                              denyButtonText: "Don't save",
+                              title: "Do you want to save the changes?",
+                              confirmButtonText: "Save",
+                            ));
+
+                        if (response == null) {
+                          return;
+                        }
+
+                        if (response.isTapConfirmButton) {
+                          ArtSweetAlert.show(
+                              context: context,
+                              artDialogArgs: ArtDialogArgs(
+                                  type: ArtSweetAlertType.success,
+                                  title: "Saved!"));
+                          return;
+                        }
+
+                        if (response.isTapDenyButton) {
+                          ArtSweetAlert.show(
+                              context: context,
+                              artDialogArgs: ArtDialogArgs(
+                                  type: ArtSweetAlertType.info,
+                                  title: "Changes are not saved!"));
+                          return;
+                        }
+                      },
+                    )),
+                Container(
+                    margin: EdgeInsets.only(bottom: 12.0),
+                    child: ArtButton(
+                      bgColor: Colors.purple,
+                      btnText: "A confirm dialog",
+                      onTab: () async {
+                        ArtDialogResponse response = await ArtSweetAlert.show(
+                            barrierDismissible: false,
+                            context: context,
+                            artDialogArgs: ArtDialogArgs(
+                                denyButtonText: "Cancel",
+                                title: "Are you sure?",
+                                text: "You won't be able to revert this!",
+                                confirmButtonText: "Yes, delete it",
+                                type: ArtSweetAlertType.warning
                             )
                         );
-                        return;
-                      }
+
+                        if (response == null) {
+                          return;
+                        }
+
+                        if (response.isTapConfirmButton) {
+                          ArtSweetAlert.show(
+                              context: context,
+                              artDialogArgs: ArtDialogArgs(
+                                  type: ArtSweetAlertType.success,
+                                  title: "Deleted!"));
+                          return;
+                        }
+                      },
+                    )),
+                Container(
+                    margin: EdgeInsets.only(bottom: 12.0),
+                    child: ArtButton(
+                      bgColor: Colors.purple,
+                      btnText: "A message with a custom image",
+                      onTab: () async {
+                        ArtSweetAlert.show(
+                            context: context,
+                            artDialogArgs: ArtDialogArgs(
+                                title: "Sweet!",
+                                text: "Modal with a custom image.",
+                                customColumns: [
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 12.0),
+                                    child: Image.network(
+                                      "https://unsplash.it/400/200",
+                                    ),
+                                  )
+                                ]));
+                      },
+                    )),
+                Container(
+                    margin: EdgeInsets.only(bottom: 12.0),
+                    child: ArtButton(
+                      bgColor: Colors.purple,
+                      btnText: "Custom padding, background",
+                      onTab: () async {
+                        ArtSweetAlert.show(
+                            context: context,
+                            artDialogArgs: ArtDialogArgs(
+                                dialogPadding: EdgeInsets.all(60),
+                                title: "Custom padding, background.",
+                                barrierColor: Color.fromRGBO(0, 0, 123, 0.4),
+                                decorationImage: DecorationImage(
+                                    image:
+                                        AssetImage('assets/images/trees.png'),
+                                    fit: BoxFit.fill)));
+                      },
+                    )),
+                Container(
+                    margin: EdgeInsets.only(bottom: 12.0),
+                    child: ArtButton(
+                      bgColor: Colors.purple,
+                      btnText: "Submit your Github username",
+                      onTab: () async {
+                        ArtDialogResponse response =
+                        await ArtSweetAlert.show(
+                            artDialogKey: _artDialogKey,
+                            context: context,
+                            artDialogArgs: ArtDialogArgs(
+                              onDispose: () {
+                                _artDialogKey = GlobalKey<ArtDialogState>();
+                              },
+                              onConfirm: () async  {
+                                _artDialogKey.currentState.showLoader();
+                                var response = await http.get(Uri.parse('https://api.github.com/users/'+_textController.text));
+                                if(response.statusCode!=200) {
+                                  _artDialogKey.currentState.hideLoader();
+                                  _artDialogKey.currentState.showErrors(["Request failed: Error"]);
+                                  return;
+                                }
 
 
-                    },
-                  )
-              ),
-              Container(
-                  margin: EdgeInsets.only(
-                      bottom: 12.0
-                  ),
-                  child: ArtButton(
-                    bgColor: Colors.grey,
-                    btnText: "A message with a custom image",
-                    onTab: () async {
-                       ArtSweetAlert.show(
-                          context: context,
-                          artDialogArgs: ArtDialogArgs(
-                            title: "Sweet!",
-                            text: "Modal with a custom image.",
-                            customColumns: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                    bottom: 12.0
+                                var body = response.body;
+
+                                var bodyJson = json.decode(body);
+
+                                _artDialogKey.currentState.hideLoader();
+                                _artDialogKey.currentState.closeDialog(
+                                    data: {
+                                      "image": bodyJson["avatar_url"]
+                                    }
+                                );
+
+
+                              },
+                              title: "Sweet!",
+
+                              customColumns: [
+                                Container(
+                                  margin: EdgeInsets.only(
+                                  bottom: 20.0
                                 ),
-                                child: Image.network(
-                                  "https://unsplash.it/400/200",
-
-                                ),
-
-                              )
-                            ]
-
-                          )
-                        );
-                    },
-                  )
-              ),
-              Container(
-                  margin: EdgeInsets.only(
-                      bottom: 12.0
-                  ),
-                  child: ArtButton(
-                    bgColor: Colors.purple,
-                    btnText: "Custom padding, background",
-                    onTab: () async {
-                      ArtSweetAlert.show(
-                          context: context,
-                          artDialogArgs: ArtDialogArgs(
-                            dialogPadding: EdgeInsets.all(60),
-                            title: "Custom padding, background.",
-                            barrierColor: Color.fromRGBO(0,0,123,0.4),
-                            decorationImage: DecorationImage(
-                              image: AssetImage('assets/images/trees.png'),
-                              fit: BoxFit.fill
+                                  child: CupertinoTextField(
+                                    controller: _textController,
+                                  ),
+                                )
+                              ]
                             )
-                          )
-                      );
-                    },
-                  )
-              ),
-            ],
+                          );
+
+
+                        if (response == null) {
+                          return;
+                        }
+
+
+
+                        if (response.isTapConfirmButton) {
+                          ArtSweetAlert.show(
+                              context: context,
+                              artDialogArgs: ArtDialogArgs(
+                                  customColumns: [
+                                    Container(
+                                      margin: EdgeInsets.only(bottom: 12.0),
+                                      child: Image.network(
+                                        response.data["image"],
+                                      ),
+                                    )
+                                  ]));
+                          return;
+                        }
+                      },
+                    )),
+              ],
+            ),
           ),
-        ),
-      )// This trailing comma makes auto-formatting nicer for build methods.
-    );
+        ) // This trailing comma makes auto-formatting nicer for build methods.
+        );
   }
 }
