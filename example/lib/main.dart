@@ -277,7 +277,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
                               },
-                              title: "Sweet!",
+                              title: "Submit your Github username!",
 
                               customColumns: [
                                 Container(

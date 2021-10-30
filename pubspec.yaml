@@ -1,6 +1,6 @@
 name: art_sweetalert
-description: A new sweet alert for flutter. You can show sweet alert in your app.
-version: 0.0.4
+description: A beautiful, responsive, customizable, accessible (wai-aria) replacement for flutter popup boxes. Both supported ios and android.
+version: 0.0.5
 repository: https://github.com/hsndmr/art_sweetalert
 
 environment:
