@@ -246,14 +246,19 @@ class _MyHomePageState extends State<MyHomePage> {
                       bgColor: Colors.purple,
                       btnText: "Submit your Github username",
                       onTab: () async {
-                        ArtDialogResponse response =
-                        await ArtSweetAlert.show(
+                        ArtDialogResponse response = await ArtSweetAlert.show(
                             artDialogKey: _artDialogKey,
                             context: context,
                             artDialogArgs: ArtDialogArgs(
-                              onDispose: () {
-                                _artDialogKey = GlobalKey<ArtDialogState>();
-                              },
+                              title: "Submit your Github username!",
+                              customColumns: [
+                                Container(
+                                  margin: EdgeInsets.only( bottom: 20.0 ),
+                                  child: CupertinoTextField(
+                                    controller: _textController,
+                                  ),
+                                )
+                              ],
                               onConfirm: () async  {
                                 _artDialogKey.currentState.showLoader();
                                 var response = await http.get(Uri.parse('https://api.github.com/users/'+_textController.text));
@@ -262,42 +267,18 @@ class _MyHomePageState extends State<MyHomePage> {
                                   _artDialogKey.currentState.showErrors(["Request failed: Error"]);
                                   return;
                                 }
-
-
                                 var body = response.body;
-
                                 var bodyJson = json.decode(body);
-
                                 _artDialogKey.currentState.hideLoader();
-                                _artDialogKey.currentState.closeDialog(
-                                    data: {
-                                      "image": bodyJson["avatar_url"]
-                                    }
-                                );
-
-
+                                _artDialogKey.currentState.closeDialog( data: { "image": bodyJson["avatar_url"] } );
                               },
-                              title: "Submit your Github username!",
-
-                              customColumns: [
-                                Container(
-                                  margin: EdgeInsets.only(
-                                  bottom: 20.0
-                                ),
-                                  child: CupertinoTextField(
-                                    controller: _textController,
-                                  ),
-                                )
-                              ]
+                              onDispose: () {
+                                _artDialogKey = GlobalKey<ArtDialogState>();
+                              },
                             )
-                          );
+                        );
 
-
-                        if (response == null) {
-                          return;
-                        }
-
-
+                        if (response == null) { return; }
 
                         if (response.isTapConfirmButton) {
                           ArtSweetAlert.show(
@@ -306,11 +287,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                   customColumns: [
                                     Container(
                                       margin: EdgeInsets.only(bottom: 12.0),
-                                      child: Image.network(
-                                        response.data["image"],
-                                      ),
+                                      child: Image.network( response.data["image"]),
                                     )
-                                  ]));
+                                  ]
+                              )
+                          );
                           return;
                         }
                       },

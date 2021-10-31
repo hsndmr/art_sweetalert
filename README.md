@@ -155,3 +155,58 @@ ArtSweetAlert.show(
 
 
 ```
+
+
+# Submit your Github username!
+```
+ArtDialogResponse response = await ArtSweetAlert.show(
+    artDialogKey: _artDialogKey,
+    context: context,
+    artDialogArgs: ArtDialogArgs(
+        title: "Submit your Github username!",
+        customColumns: [
+            Container(
+                margin: EdgeInsets.only( bottom: 20.0 ),
+                child: CupertinoTextField(
+                    controller: _textController,
+                ),
+            )
+        ],
+        onConfirm: () async  {
+            _artDialogKey.currentState.showLoader();
+            var response = await http.get(Uri.parse('https://api.github.com/users/'+_textController.text));
+            if(response.statusCode!=200) {
+                _artDialogKey.currentState.hideLoader();
+                _artDialogKey.currentState.showErrors(["Request failed: Error"]);
+                return;
+            }
+            var body = response.body;
+            var bodyJson = json.decode(body);
+            _artDialogKey.currentState.hideLoader();
+            _artDialogKey.currentState.closeDialog( data: { "image": bodyJson["avatar_url"] } );
+        },
+        onDispose: () {
+            _artDialogKey = GlobalKey<ArtDialogState>();
+        },
+    )
+);
+
+if (response == null) { return; }
+
+if (response.isTapConfirmButton) {
+    ArtSweetAlert.show(
+        context: context,
+        artDialogArgs: ArtDialogArgs(
+            customColumns: [
+                Container(
+                    margin: EdgeInsets.only(bottom: 12.0),
+                    child: Image.network( response.data["image"]),
+                )
+            ]
+        )
+    );
+    return;
+}
+
+
+```
