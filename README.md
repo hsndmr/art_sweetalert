@@ -2,7 +2,7 @@
 
 A beautiful, responsive, customizable, accessible replacement, easy use for flutter popup boxes. Both supported ios and android.
 
-![](https://github.com/hsndmr/art_sweetalert/raw/master/images/success-message.gif)
+![](https://github.com/hsndmr/art_sweetalert/raw/master/images/example.gif)
 
 # A success message
 
