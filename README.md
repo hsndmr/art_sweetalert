@@ -1,8 +1,8 @@
 # art_sweetalert
 
-A new sweet alert for flutter. You can show sweet alert in your app.
+A beautiful, responsive, customizable, accessible replacement, easy use for flutter popup boxes. Both supported ios and android.
 
-
+![](https://github.com/hsndmr/art_sweetalert/raw/master/images/success-message.gif)
 
 # A success message
 
