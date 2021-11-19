@@ -16,3 +16,6 @@ export 'src/buttons/art_button.dart';
 
 export 'src/art_sweetalert.dart';
 export 'src/art_dialog.dart';
+
+//models
+export 'src/models/art_dialog_response.dart';

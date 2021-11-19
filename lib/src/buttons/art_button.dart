@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ArtButton extends StatefulWidget {
   final Color bgColor;
   final Icon? btnIcon;
-  final Function? onTab;
+  final Function()? onTab;// variable type ischanged from Function?
   final String btnText;
   final TextStyle? btnTextStyle;
   final double fontSize;
@@ -26,22 +26,14 @@ class _ArtButtonState extends State<ArtButton> {
   List<Widget> btnColumns = <Widget>[];
 
   void initBtnColumns() {
-    Widget button = Container(
+    final button = Container(
       child: Text(
         widget.btnText,
         style: widget.btnTextStyle ??
-            TextStyle(
-                color: Colors.white,
-                fontSize: widget.fontSize,
-                fontWeight: FontWeight.w500),
+            TextStyle(color: Colors.white, fontSize: widget.fontSize, fontWeight: FontWeight.w500),
       ),
     );
-    btnColumns.add(GestureDetector(
-      onTap: () {
-        widget.onTab!;
-      },
-      child: button,
-    ));
+    btnColumns.add(GestureDetector(onTap: widget.onTab, child: button));
   }
 
   @override
@@ -54,18 +46,12 @@ class _ArtButtonState extends State<ArtButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        widget.onTab!();
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-            color: widget.bgColor),
-        child: IgnorePointer(
-          child: Row(mainAxisSize: MainAxisSize.min, children: btnColumns),
-        ),
-      ),
-    );
+        onTap: widget.onTab, //onTap parameter value changed to more efficient way
+        child: Container(
+            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(4.0)), color: widget.bgColor),
+            child:
+                IgnorePointer(child: Row(mainAxisSize: MainAxisSize.min, children: btnColumns))));
   }
 }

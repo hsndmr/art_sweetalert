@@ -2,29 +2,23 @@ import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:art_sweetalert/src/art_error.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'models/art_dialog_response.dart';
 
 class ArtDialog extends StatefulWidget {
   final ArtDialogArgs artDialogArgs;
 
-  const ArtDialog({
-    Key? key,
-    required
-    this.artDialogArgs
-  }) : super(key: key);
-
+  const ArtDialog({Key? key, required this.artDialogArgs}) : super(key: key);
 
   @override
   ArtDialogState createState() => ArtDialogState();
 }
 
 class ArtDialogState extends State<ArtDialog> {
-
   List<Widget> _customColumns = <Widget>[];
 
   ArtDialogResponse _artDialogResponse = ArtDialogResponse();
 
   bool _isShowButtons = true;
-
 
   late ArtDialogArgs _artDialogArgs;
 
@@ -37,44 +31,32 @@ class ArtDialogState extends State<ArtDialog> {
 
   List<Widget> _errors = <Widget>[];
 
-
-
+//Unnecessary icon variable is removed
   Widget getIcon() {
+    if (_icon != null) return _icon!;
 
-    if(_icon!=null) {
-      return _icon!;
-    }
-
-    Widget icon = SizedBox.shrink();
+    _icon = SizedBox.shrink();
     bool hasIcon = _artDialogArgs.type != null;
     if (hasIcon) {
       switch (_artDialogArgs.type!) {
         case ArtSweetAlertType.success:
-          icon = SuccessIcon(
-            size: _artDialogArgs.sizeSuccessIcon,
-          );
+          _icon = SuccessIcon(size: _artDialogArgs.sizeSuccessIcon);
           break;
 
         case ArtSweetAlertType.question:
-          icon = QuestionIcon(
-            size: _artDialogArgs.sizeQuestionIcon,
-          );
+          _icon = QuestionIcon(size: _artDialogArgs.sizeQuestionIcon);
           break;
 
         case ArtSweetAlertType.danger:
-          icon = ErrorIcon(
-            size: _artDialogArgs.sizeErrorIcon,
-          );
+          _icon = ErrorIcon(size: _artDialogArgs.sizeErrorIcon);
           break;
 
         case ArtSweetAlertType.info:
-          icon = InfoIcon(
-            size: _artDialogArgs.sizeInfoIcon,
-          );
+          _icon = InfoIcon(size: _artDialogArgs.sizeInfoIcon);
           break;
 
         case ArtSweetAlertType.warning:
-          icon = WarningIcon(size: _artDialogArgs.sizeWarningIcon);
+          _icon = WarningIcon(size: _artDialogArgs.sizeWarningIcon);
           break;
 
         default:
@@ -83,85 +65,54 @@ class ArtDialogState extends State<ArtDialog> {
       }
     }
 
-    icon = Container(
-      margin: EdgeInsets.only(bottom: hasIcon ? 12.0 : 0.0),
-      child: icon,
-    );
-    _icon = icon;
-    return icon;
+    _icon = Container(margin: EdgeInsets.only(bottom: hasIcon ? 12.0 : 0.0), child: _icon);
+    return _icon!;
   }
 
+  //Unnecessary text variable is removed
   Widget getTitle() {
+    if (_title != null) return _title!;
 
-    if(_title!=null) {
-      return _title!;
-    }
+    _title = _artDialogArgs.title == null
+        ? SizedBox.shrink()
+        : Text(_artDialogArgs.title!,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Color.fromRGBO(89, 89, 89, 1), fontSize: _artDialogArgs.getTitleSize));
 
-    Widget text = SizedBox.shrink();
+    _title = Container(margin: EdgeInsets.only(bottom: 12.0), child: _title);
 
-    if (_artDialogArgs.title != null) {
-      text = Text(
-        _artDialogArgs.title!,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            color: Color.fromRGBO(89, 89, 89, 1),
-            fontSize: _artDialogArgs.getTitleSize),
-      );
-    }
-
-    text = Container(
-      margin: EdgeInsets.only(bottom: 12.0),
-      child: text,
-    );
-
-    _title = text;
-
-    return text;
-
+    return _title!;
   }
 
+  //Unnecessary text variable is removed
   Widget getText() {
-    if(_text!=null) {
-      return _text!;
-    }
-    Widget text = SizedBox.shrink();
-    bool hasText = _artDialogArgs.text != null;
-    if (hasText) {
-      text = Text(
-        _artDialogArgs.text!,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Color.fromRGBO(84, 84, 84, 1), fontSize: 14.0),
-      );
-    }
+    if (_text != null) return _text!;
 
-    text = Container(
-      margin: EdgeInsets.only(bottom: hasText ? 12.0 : 0.0),
-      child: text,
-    );
-    _text = text;
-    return text;
+    final hasText = _artDialogArgs.text != null;
+
+    _text = hasText
+        ? Text(_artDialogArgs.text!,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Color.fromRGBO(84, 84, 84, 1), fontSize: 14.0))
+        : SizedBox.shrink();
+
+    _text = Container(margin: EdgeInsets.only(bottom: hasText ? 12.0 : 0.0), child: _text);
+
+    return _text!;
   }
 
   Widget getConfirmButton() {
-    if(_confirmButton!=null) {
-      return _confirmButton!;
-    }
+    if (_confirmButton != null) return _confirmButton!;
 
-    _confirmButton =  Container(
+    _confirmButton = Container(
       child: ArtButton(
         btnText: _artDialogArgs.confirmButtonText,
         bgColor: _artDialogArgs.confirmButtonColor,
-        onTab:  () {
-
+        onTab: () {
           _artDialogResponse.isTapConfirmButton = true;
-
-          if (_artDialogArgs.onConfirm != null) {
-            _artDialogArgs.onConfirm!();
-            return;
-          }
-
-          Navigator.pop(context, _artDialogResponse);
-
+          //Changed to more useful way instade of whole if-else statement
+          _artDialogArgs.onConfirm?.call() ?? Navigator.pop(context, _artDialogResponse);
         },
       ),
     );
@@ -170,97 +121,61 @@ class ArtDialogState extends State<ArtDialog> {
   }
 
   Widget getDenyButton() {
-    if(_denyButton!=null) {
-      return _denyButton!;
-    }
+    if (_denyButton != null) return _denyButton!;
 
-    _denyButton =  Container(
-      margin: EdgeInsets.only(left: 8.0),
-      child: ArtButton(
-          btnText: _artDialogArgs.denyButtonText!,
-          bgColor: _artDialogArgs.denyButtonColor,
-          onTab: () {
-            if (_artDialogArgs.onDeny == null) {
-              _artDialogResponse.isTapDenyButton = true;
-              Navigator.pop(context, _artDialogResponse);
-              return;
-            }
-
-            _artDialogArgs.onDeny!();
-          }),
-    );
+    _denyButton = Container(
+        margin: EdgeInsets.only(left: 8.0),
+        child: ArtButton(
+            btnText: _artDialogArgs.denyButtonText!,
+            bgColor: _artDialogArgs.denyButtonColor,
+            onTab: () {
+              if (_artDialogArgs.onDeny == null) {
+                _artDialogResponse.isTapDenyButton = true;
+                Navigator.pop(context, _artDialogResponse);
+                return;
+              }
+              _artDialogArgs.onDeny!;
+            }));
 
     return _denyButton!;
   }
 
   Widget getCancelButton() {
-
-    if(_cancelButton!=null) {
-      return _cancelButton!;
-    }
+    if (_cancelButton != null) return _cancelButton!;
 
     _cancelButton = Container(
       margin: EdgeInsets.only(left: 8.0),
       child: ArtButton(
-          bgColor: _artDialogArgs.cancelButtonColor,
-          btnText: _artDialogArgs.cancelButtonText,
-          onTab: () {
-            if (_artDialogArgs.onCancel == null) {
-              _artDialogResponse.isTapCancelButton = true;
-              Navigator.pop(context, _artDialogResponse);
-              return;
-            }
+        bgColor: _artDialogArgs.cancelButtonColor,
+        btnText: _artDialogArgs.cancelButtonText,
+        onTab: () {
+          if (_artDialogArgs.onCancel == null) {
+            _artDialogResponse.isTapCancelButton = true;
+            Navigator.pop(context, _artDialogResponse);
+            return;
+          }
 
-            _artDialogArgs.onCancel!();
-          }),
+          _artDialogArgs.onCancel!();
+        },
+      ),
     );
 
     return _cancelButton!;
   }
 
-  void _initCustomColumns() {
-    _customColumns = [];
+  // Generated to more efficent way
+  void _initCustomColumns() => _customColumns = _artDialogArgs.customColumns?.toList() ?? [];
 
-    if (_artDialogArgs.customColumns != null) {
-      _artDialogArgs.customColumns!.forEach((element) {
-        _customColumns.add(element);
-      });
-    }
-  }
+  void showLoader() => setState(() => _isShowButtons = false);
 
-  void showLoader() {
-    setState(() {
-      this._isShowButtons = false;
-    });
-  }
+  void hideLoader() => setState(() => _isShowButtons = true);
 
-  void hideLoader() {
-    setState(() {
-      this._isShowButtons = true;
-    });
-  }
+  // Generated to more efficent way
+  void showErrors(List<String> errors) =>
+      setState(() => _errors = errors.map((e) => ArtError(title: e)).toList());
 
-  void showErrors(List<String> errors) {
-    _errors = <Widget>[];
-    errors.forEach((element) {
-      _errors.add(ArtError(
-        title: element,
-      ));
-    });
-    setState(() {
-
-    });
-  }
-
-  void closeDialog({
-    Map<String, dynamic>? data
-  }) {
-
-
-
-    if(data!=null) {
-      _artDialogResponse.data = data;
-    }
+  void closeDialog({Map<String, dynamic>? data}) {
+    if (data != null) _artDialogResponse.data = data;
 
     Navigator.pop(context, _artDialogResponse);
   }
@@ -274,15 +189,13 @@ class ArtDialogState extends State<ArtDialog> {
 
   @override
   void dispose() {
-    if(_artDialogArgs.onDispose!=null) {
-      _artDialogArgs.onDispose!();
-    }
+    _artDialogArgs.onDispose?.call();
     super.dispose();
   }
 
+  // tree structure Changed for some unnecessary widget and methods
   @override
   Widget build(BuildContext context) {
-
     return Dialog(
       backgroundColor: Colors.transparent,
       elevation: _artDialogArgs.dialogElevation,
@@ -290,49 +203,35 @@ class ArtDialogState extends State<ArtDialog> {
         child: Container(
           padding: _artDialogArgs.dialogPadding,
           decoration: _artDialogArgs.getDialogDecoration(),
-          child: Column(
-            mainAxisSize: _artDialogArgs.dialogMainAxisSize,
-            children: [
-              getIcon(),
-              getTitle(),
-              getText(),
-              ..._customColumns,
-              if(_errors.length>0) ... [
-                Container(
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ..._errors
-                    ]
-                  ),
-                )
-              ],
-              Visibility(
-                  visible: _isShowButtons,
-                  child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        getConfirmButton(),
-                        if(_artDialogArgs.denyButtonText != null) ... [
-                          getDenyButton()
-                        ],
-                        if(_artDialogArgs.showCancelBtn) ... [
-                          getCancelButton()
-                        ]
-                      ]
-                  )
-              ),
-              Visibility(
-                visible: !_isShowButtons,
-                child: Container(
-                    child: CupertinoActivityIndicator(animating: true,)
+          child: Visibility(
+            visible: _isShowButtons,
+            replacement: CupertinoActivityIndicator(animating: true),
+            child: Column(
+              mainAxisSize: _artDialogArgs.dialogMainAxisSize,
+              children: [
+                getIcon(),
+                getTitle(),
+                getText(),
+                ..._customColumns,
+                if (_errors.length > 0)
+                  Container(
+                      alignment: Alignment.center,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: _errors)),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    getConfirmButton(),
+                    if (_artDialogArgs.denyButtonText != null) getDenyButton(),
+                    if (_artDialogArgs.showCancelBtn) getCancelButton()
+                  ],
                 ),
-              )
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -371,7 +270,6 @@ class ArtDialogArgs {
   final Color cancelButtonColor;
 
   final EdgeInsets dialogPadding;
-  Decoration? dialogDecoration;
   final double dialogElevation;
   final MainAxisSize dialogMainAxisSize;
   final AlignmentGeometry dialogAlignment;
@@ -381,9 +279,9 @@ class ArtDialogArgs {
 
   final List<Widget>? customColumns;
 
-  late Decoration _dialogDecoration;
+  final Decoration _dialogDecoration;
 
-
+  //constructor body is changed with more efficent way
   ArtDialogArgs(
       {this.sizeSuccessIcon = 50.0,
       this.sizeInfoIcon = 50.0,
@@ -407,34 +305,17 @@ class ArtDialogArgs {
       this.cancelButtonColor = const Color.fromRGBO(117, 117, 117, 1),
       this.customColumns,
       this.dialogPadding = const EdgeInsets.all(20),
-      this.dialogDecoration,
+      Decoration? dialogDecoration,
       this.decorationImage,
       this.dialogElevation = 0.0,
       this.dialogMainAxisSize = MainAxisSize.min,
       this.dialogAlignment = Alignment.center,
-      this.barrierColor = const Color.fromRGBO(0, 0, 0, 0.4)}) {
-    if (dialogDecoration != null) {
-      _dialogDecoration = this.dialogDecoration!;
-    } else {
-      _dialogDecoration = BoxDecoration(
-          image: decorationImage,
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(4.0)));
-    }
-  }
+      this.barrierColor = const Color.fromRGBO(0, 0, 0, 0.4)})
+      : _dialogDecoration = dialogDecoration ??
+            BoxDecoration(
+                image: decorationImage,
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(4.0)));
 
-  Decoration getDialogDecoration() {
-    return _dialogDecoration;
-  }
-
-
-}
-
-class ArtDialogResponse {
-  bool isTapConfirmButton = false;
-  bool isTapDenyButton = false;
-  bool isTapCancelButton = false;
-
-  Map<String, dynamic> data = {};
-
+  Decoration getDialogDecoration() => _dialogDecoration;
 }
