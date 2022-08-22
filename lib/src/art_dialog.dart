@@ -104,7 +104,7 @@ class ArtDialogState extends State<ArtDialog> {
         _artDialogArgs.title!,
         textAlign: TextAlign.center,
         style: TextStyle(
-            color: Color.fromRGBO(89, 89, 89, 1),
+            color: _artDialogArgs.titleColor,
             fontSize: _artDialogArgs.getTitleSize),
       );
     }
@@ -130,7 +130,7 @@ class ArtDialogState extends State<ArtDialog> {
       text = Text(
         _artDialogArgs.text!,
         textAlign: TextAlign.center,
-        style: TextStyle(color: Color.fromRGBO(84, 84, 84, 1), fontSize: 14.0),
+        style: TextStyle(color: _artDialogArgs.textColor, fontSize: 14.0),
       );
     }
 
@@ -370,6 +370,10 @@ class ArtDialogArgs {
   final Color denyButtonColor;
   final Color cancelButtonColor;
 
+  //text colors
+  final Color titleColor;
+  final Color textColor;
+
   final EdgeInsets dialogPadding;
   Decoration? dialogDecoration;
   final double dialogElevation;
@@ -405,6 +409,8 @@ class ArtDialogArgs {
       this.confirmButtonColor = const Color.fromRGBO(115, 103, 240, 1),
       this.denyButtonColor = const Color.fromRGBO(221, 51, 51, 1),
       this.cancelButtonColor = const Color.fromRGBO(117, 117, 117, 1),
+      this.titleColor = const Color.fromRGBO(89, 89, 89, 1),
+      this.textColor = const Color.fromRGBO(84, 84, 84, 1),
       this.customColumns,
       this.dialogPadding = const EdgeInsets.all(20),
       this.dialogDecoration,
